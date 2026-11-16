@@ -23,6 +23,13 @@ image or to a separate private module repository.
 Start with the tutorial if you have not used CEKit before. All commands in the
 guides assume the repository root unless another directory is shown.
 
+The foundation is the [account and startup lifecycle](docs/tutorial.md#5-run-python-without-root):
+modules install accounts, tools and hooks during the build; at startup the
+entrypoint runs system hooks as root, user hooks as the selected container user,
+then executes the application. Creating an account does not select the runtime
+user. See the [combined hook example](docs/tutorial.md#combining-system-hooks-and-a-non-root-user)
+for ordering, permissions and when sudo is required.
+
 ## Quick start
 
 Requires Python 3.12+, CEKit 4.16.0, Git and Buildah. Podman runs the examples.

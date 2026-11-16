@@ -87,6 +87,28 @@ the appropriate argument in the image descriptor instead.
 
 ## 5. Run Python without root
 
+### Building an account versus running as that account
+
+Modules compose the image at build time; hooks compose its startup at runtime.
+These are separate stages:
+
+| Stage | What happens | Who runs it |
+|---|---|---|
+| Build | `user` creates the account and home; other modules install packages and hooks | root by default; a module can select `execute.user` for an installation script |
+| Container start | `/entrypoint.d/*` prepares system configuration | root |
+| Container start | `/entrypoint.user.d/*` prepares user configuration | the container's selected user |
+| Application | The entrypoint executes the requested command | the same selected user |
+
+Declaring a module dependency controls build order. Hook filenames control
+startup order. A module that installs a hook must depend on `entrypoint` so the
+hook directory and runner exist before its installer runs. A script that needs
+a particular account during installation must also declare a dependency on
+`user` and select its `execute.user` explicitly.
+
+The `user` and `entrypoint` modules can be used independently. A root container
+can use hooks without creating an account, and an image can create an account
+without using startup hooks.
+
 ```sh
 make -C images/python-user build
 podman run --rm --network=none localhost/examples/python-user:latest
@@ -102,6 +124,30 @@ The example declares `user` and `python`. Account creation happens during the
 build as root. `run.user` selects UID 1000 only for the finished container;
 `HOME` and `run.workdir` point at that account's writable directory. Installing
 `user` alone does not switch the final runtime user.
+
+The relevant descriptor settings are:
+
+```yaml
+args:
+  - name: USER_NAME
+    value: app
+  - name: USER_UID
+    value: "1000"
+  - name: USER_GID
+    value: "1000"
+envs:
+  - name: HOME
+    value: /home/app
+run:
+  user: "1000"
+  workdir: /home/app
+```
+
+`USER_HOME` defaults to `/home/<USER_NAME>` during account creation. It does not
+set runtime `HOME`: keep those paths consistent in the consuming image. Changing
+`USER_UID` also requires updating `run.user`. Files needed by the application
+must be readable or writable by that UID; creating the account does not change
+ownership of files installed by other modules or bind-mounted from the host.
 
 Inspect the account from inside the same image:
 
@@ -138,6 +184,51 @@ or configuration without modifying the public recipes.
 Hooks run as separate processes: exporting a variable in a hook does not change
 the environment of the final command. Declare runtime variables in the image or
 supply them with `podman --env`. An unsuccessful hook stops startup.
+
+### Combining system hooks and a non-root user
+
+For example, an image could install these executable files during the build:
+
+```text
+/entrypoint.d/20-system-config.sh
+/entrypoint.user.d/50-user-config.sh
+/entrypoint.user.d/90-project-update.sh
+```
+
+With `run.user: "1000"`, every normal container start follows this sequence:
+
+```text
+/entrypoint.sh (UID 1000)
+  -> sudo -n /run-system-hooks.sh
+       -> 20-system-config.sh (root)
+  -> 50-user-config.sh (UID 1000)
+  -> 90-project-update.sh (UID 1000)
+  -> exec requested-command (UID 1000)
+```
+
+Each directory is processed separately in filename order: all system hooks
+finish before any user hook, regardless of their numeric prefixes. Use system
+hooks for files that require root, and user hooks for files under `HOME` or a
+user-owned project. Hooks run on every start, so make repeated execution safe.
+
+**Non-root execution with system hooks requires sudo to be installed.**
+`entrypoint` writes a rule allowing only `/run-system-hooks.sh` without arguments,
+but does not install sudo. A consuming module can install the `sudo` RPM during
+the build to use that restricted rule. `USER_SUDO=yes` also installs sudo, but
+additionally grants the account unrestricted passwordless sudo; it is not
+required merely to use system hooks. Keep the system runner, its hooks and
+their directories owned by root and unwritable by the application user.
+
+If there are no executable system hooks, a non-root container needs no sudo.
+When the container runs as root, both types of hooks run as root: the entrypoint
+does not switch to the account created by `user`.
+
+The entrypoint stops at the first failed hook and returns its status. With no
+command, it finishes after the hooks; it does not start a shell automatically.
+Use `VERBOSE_BOOT=yes` to see hook names. Passing `--entrypoint` to Podman
+replaces the startup runner and bypasses these hooks. A custom wrapper should
+delegate with `exec /entrypoint.sh "$@"` after its own preparation so the shared
+hooks and final command still run.
 
 ## 7. Consume the modules from your own repository
 

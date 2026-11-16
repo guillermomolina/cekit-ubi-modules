@@ -24,6 +24,11 @@ the image's install list if another selected module declares it as a dependency.
 
 ## Accounts and startup
 
+Start with the tutorial's [build and startup lifecycle](tutorial.md#5-run-python-without-root)
+and [combined system/user hook example](tutorial.md#combining-system-hooks-and-a-non-root-user).
+Module dependencies order installation during the build; hook filenames order
+execution at each container start.
+
 ### `user`
 
 No module dependencies. It creates an account without a usable password and
@@ -60,6 +65,18 @@ entrypoint process with `exec`.
 Non-root system hooks require sudo. The installed sudoers rule permits only
 `/run-system-hooks.sh` with no arguments. It is independent of `USER_SUDO=yes`.
 User hooks do not need sudo. See the [startup-hooks example](../images/startup-hooks).
+
+`entrypoint` does not install sudo. Install that RPM in the consuming module
+when non-root execution needs system hooks. `USER_SUDO=yes` installs it too,
+but grants broader privileges than the restricted system-hook rule. No sudo is
+needed when there are no executable system hooks. Keep system hooks and their
+runner root-owned and unwritable by the runtime user.
+
+The runner does not change the container's selected user: with a root container,
+user hooks also run as root. Hooks run as separate processes, so their exports
+do not alter the final command's environment. They must tolerate repeated starts.
+With no command the runner exits after hooks. Overriding the image entrypoint
+bypasses the runner unless the replacement delegates to it.
 
 ## Git and package tools
 
