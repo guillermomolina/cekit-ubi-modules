@@ -1,0 +1,18 @@
+schema_version: 1
+name: localhost/examples/maven
+version: latest
+description: Apache Maven with JDK 21 and upstream repository defaults.
+from: docker.io/redhat/ubi10-minimal:latest
+args:
+  - name: MAVEN_VERSION
+    value: "3.9.14"
+  - name: JAVA_MAJOR_VERSION
+    value: "21"
+modules:
+  repositories:
+    - path: ../../modules
+  install:
+    - name: entrypoint
+    - name: maven
+run:
+  cmd: [mvn, --version]

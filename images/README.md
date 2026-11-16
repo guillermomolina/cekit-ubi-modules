@@ -24,7 +24,9 @@ The Makefiles intentionally do not contain publishing or credential automation.
 | [ansible](ansible/image.yaml) | Public Ansible and its optional project wrapper | `podman run --rm localhost/examples/ansible:latest ansible --version` |
 | [apache](apache/image.yaml) | Foreground HTTP Server using distribution configuration | See the [HTTP recipe](../docs/recipes.md#run-apache-and-make-an-http-request) |
 | [chart](chart/image.yaml) | Git, Helm, kubeconform and kube-linter | `podman run --rm localhost/examples/chart:latest helm version --short` |
+| [maven](maven/image.yaml) | Maven 3 with JDK 21 and upstream settings | `podman run --rm localhost/examples/maven:latest` |
 | [jdk](jdk/image.yaml) | JDK 21 with a transitive Java runtime dependency | `podman run --rm localhost/examples/jdk:latest javac -version` |
+| [maven](maven/image.yaml) | Maven 3 with a transitive JDK dependency | `podman run --rm localhost/examples/maven:latest` |
 | [container-tools](container-tools/image.yaml) | Buildah/Skopeo storage and a shared account | `podman run --rm localhost/examples/container-tools:latest buildah --version` |
 | [credentials](credentials/image.yaml) | Optional credential hooks and Vault CLI | See [runtime secret files](../docs/recipes.md#write-a-generic-secret-file-without-vault) |
 | [custom-ca](custom-ca/image.yaml) | Certificate artifact supplied by the caller | Provide `private/custom-ca.crt` first; see the [CA recipe](../docs/recipes.md#install-a-custom-ca) |

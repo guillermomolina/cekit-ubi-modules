@@ -236,6 +236,35 @@ The runtime module sets `JAVA_HOME=/usr/lib/jvm/jre`; the JDK module sets
 `JAVA_HOME=/usr/lib/jvm/java`. Unsupported combinations are rejected before
 package installation. Java 6 and private binary distributions are not included.
 
+### Maven
+
+`maven` depends on `jdk` (and transitively `java`). It installs Maven 3 from
+Apache's release archive, checks the published SHA-512, and installs tar/gzip
+for extraction. `MAVEN_VERSION` defaults to `3.9.14`; `JAVA_MAJOR_VERSION`
+defaults to `21` through the Java module and follows the UBI compatibility table
+above. Maven 3.9 requires JDK 8 or newer; see the
+[official installation guide](https://maven.apache.org/install.cgi).
+
+`MAVEN_HOME=/usr/share/maven`; `mvn` is available on PATH. The module retains
+Apache's global settings and does not configure mirrors, credentials or an
+entrypoint. Add `entrypoint` if your image needs hooks. Supply user settings in
+`$HOME/.m2/settings.xml` or pass `mvn --settings /path/settings.xml`.
+See the [Maven example](../images/maven/image.yaml).
+
+### Maven
+
+`maven` depends on `jdk` (and transitively `java`). `MAVEN_VERSION=3.9.14`
+selects an Apache Maven 3 release; `JAVA_MAJOR_VERSION` selects the JDK, default
+21, subject to the UBI compatibility table above. Maven 3.9 requires JDK 8+;
+see the [official installation requirements](https://maven.apache.org/install.cgi).
+
+The module installs tar/gzip, downloads the binary archive from the official
+Apache archive and verifies its published SHA-512. `MAVEN_HOME=/usr/share/maven`
+and `/usr/bin/mvn` points to its launcher. Upstream settings are preserved;
+there are no private repositories or credentials. User settings and cache use
+`$HOME/.m2` by default. The module does not need startup hooks. See the
+[Maven example](../images/maven/image.yaml).
+
 | Module | Build argument | Default | Installation |
 |---|---|---|---|
 | `oc` | `OC_VERSION` | `4.21.17` | Official Linux amd64 archive and Bash completion |

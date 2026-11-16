@@ -68,6 +68,7 @@ repositories and upstream release servers.
 | `ansible` | Ansible Core, OpenSSH client and optional project updates | `python` |
 | `apache` | HTTP Server with distribution configuration | none |
 | `java` | Headless OpenJDK runtime | none |
+| `maven` | Apache Maven 3 with upstream settings | `jdk` |
 | `jdk` | OpenJDK development tools | `java` |
 | `vault` | Vault CLI | none |
 | `credentials` | Optional runtime credential files and SSH certificates | `entrypoint`, `vault` |

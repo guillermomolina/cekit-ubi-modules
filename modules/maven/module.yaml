@@ -1,0 +1,11 @@
+name: maven
+version: "0.1.0"
+description: Installs Apache Maven with a JDK and upstream configuration.
+modules:
+  install:
+    - name: jdk
+envs:
+  - name: MAVEN_HOME
+    value: /usr/share/maven
+execute:
+  - script: install.sh
