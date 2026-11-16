@@ -1,0 +1,16 @@
+name: buildah
+version: "0.1.0"
+description: Installs Buildah and configures nested container storage and subordinate IDs.
+artifacts:
+  - name: buildah-containers-configuration
+    path: files/containers.conf
+    target: buildah-containers.conf
+modules:
+  install:
+    - name: user
+    - name: git
+execute:
+  - script: install.sh
+envs:
+  - name: BUILDAH_ISOLATION
+    value: chroot

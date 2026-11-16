@@ -1,0 +1,20 @@
+schema_version: 1
+name: localhost/examples/custom-ca
+version: latest
+description: custom-ca example using public CEKit UBI modules.
+from: docker.io/redhat/ubi10-minimal:latest
+modules:
+  repositories:
+  - path: ../../modules
+  install:
+  - name: ca
+artifacts:
+- name: custom-ca
+  path: private/custom-ca.crt
+  target: custom-ca.crt
+envs:
+- name: VERBOSE_BOOT
+  value: 'no'
+run:
+  cmd:
+  - /bin/sh

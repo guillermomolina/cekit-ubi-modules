@@ -1,0 +1,24 @@
+name: ansible
+version: "0.1.0"
+description: Installs Ansible Core, the OpenSSH client and optional project hooks.
+artifacts:
+  - name: ansible-entrypoint
+    path: files/entrypoint.sh
+    target: ansible-entrypoint.sh
+  - name: ansible-update
+    path: files/update.sh
+    target: ansible-update.sh
+  - name: ansible-requirements
+    path: files/requirements.txt
+    target: ansible-requirements.txt
+    dest: /tmp/artifacts/
+envs:
+  - name: LANG
+    value: C.UTF-8
+execute:
+  - script: install.sh
+run:
+  workdir: /root
+modules:
+  install:
+    - name: python

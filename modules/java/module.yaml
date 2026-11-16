@@ -1,0 +1,8 @@
+name: java
+version: "0.1.0"
+description: Installs a headless OpenJDK runtime supported by the UBI base.
+envs:
+  - name: JAVA_HOME
+    value: /usr/lib/jvm/jre
+execute:
+  - script: install.sh

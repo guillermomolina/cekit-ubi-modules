@@ -1,0 +1,12 @@
+name: git
+version: "0.1.0"
+description: Installs Git using the git-core package.
+artifacts:
+  - name: git-update-hook
+    path: files/update.sh
+    target: git-update.sh
+execute:
+  - script: install.sh
+modules:
+  install:
+    - name: entrypoint

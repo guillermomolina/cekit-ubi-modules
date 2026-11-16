@@ -1,0 +1,19 @@
+name: apache
+version: "0.1.0"
+description: Installs Apache HTTP Server with the distribution configuration.
+artifacts:
+  - name: apache-foreground
+    path: files/httpd-foreground
+    target: httpd-foreground
+envs:
+  - name: APACHE_SERVER_ROOT
+    value: /etc/httpd
+ports:
+  - value: 80
+    protocol: tcp
+execute:
+  - script: install.sh
+run:
+  workdir: /etc/httpd
+  cmd:
+    - httpd-foreground

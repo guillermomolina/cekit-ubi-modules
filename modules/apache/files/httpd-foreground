@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+# Apache gets grumpy about PID files pre-existing
+mkdir -p /run/httpd
+rm -f /run/httpd/httpd.pid
+
+if [ -f /etc/httpd/envvars ]; then
+    . /etc/httpd/envvars
+fi
+
+exec httpd -DFOREGROUND "$@"

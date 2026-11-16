@@ -1,0 +1,10 @@
+name: ca
+version: "0.1.0"
+description: Installs a custom CA certificate supplied by the consuming image.
+artifacts:
+  - name: custom-ca
+    path: custom-ca.crt
+    target: custom-ca.crt
+    dest: /tmp/artifacts/
+execute:
+  - script: install.sh

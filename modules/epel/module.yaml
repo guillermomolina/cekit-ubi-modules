@@ -1,0 +1,5 @@
+name: epel
+version: "0.1.0"
+description: Installs the EPEL release repository package for the UBI major version.
+execute:
+  - script: install.sh

@@ -1,0 +1,5 @@
+name: make
+version: "0.1.0"
+description: Installs GNU Make.
+execute:
+  - script: install.sh

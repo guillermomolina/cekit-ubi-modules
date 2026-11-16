@@ -1,0 +1,8 @@
+name: helm
+version: "0.1.0"
+description: Installs Helm, tar and gzip for chart packaging.
+modules:
+  install:
+    - name: epel
+execute:
+  - script: install.sh

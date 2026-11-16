@@ -1,0 +1,14 @@
+**/target/
+.venv/
+__pycache__/
+*.pyc
+.env
+.envrc
+.netrc
+.pypirc
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+private/

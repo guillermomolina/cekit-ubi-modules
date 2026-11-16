@@ -1,0 +1,5 @@
+name: kubeconform
+version: "0.1.0"
+description: Installs kubeconform from the official Linux amd64 release.
+execute:
+  - script: install.sh

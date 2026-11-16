@@ -1,0 +1,17 @@
+name: entrypoint
+version: "0.1.0"
+description: Installs OCI entrypoint and per-start system/user hook runners.
+artifacts:
+  - name: entrypoint-script
+    path: files/entrypoint.sh
+    target: entrypoint.sh
+    dest: /tmp/artifacts/
+  - name: system-hooks-runner
+    path: files/run-system-hooks.sh
+    target: run-system-hooks.sh
+    dest: /tmp/artifacts/
+execute:
+  - script: install.sh
+run:
+  entrypoint:
+    - /entrypoint.sh

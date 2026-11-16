@@ -1,0 +1,21 @@
+name: podman
+version: "0.1.0"
+description: Installs Podman and configures nested container storage and subordinate IDs.
+artifacts:
+  - name: podman-containers-configuration
+    path: files/containers.conf
+    target: podman-containers.conf
+  - name: podman-user-containers-configuration
+    path: files/user-containers.conf
+    target: podman-user-containers.conf
+modules:
+  install:
+    - name: user
+    - name: git
+execute:
+  - script: install.sh
+envs:
+  - name: BUILDAH_ISOLATION
+    value: chroot
+  - name: _CONTAINERS_USERNS_CONFIGURED
+    value: ""

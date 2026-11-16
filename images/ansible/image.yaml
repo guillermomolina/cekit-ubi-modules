@@ -1,0 +1,18 @@
+schema_version: 1
+name: localhost/examples/ansible
+version: latest
+description: ansible example using public CEKit UBI modules.
+from: docker.io/redhat/ubi10-minimal:latest
+modules:
+  repositories:
+  - path: ../../modules
+  install:
+  - name: ansible
+envs:
+- name: VERBOSE_BOOT
+  value: 'no'
+run:
+  entrypoint:
+  - /ansible-entrypoint.sh
+  cmd:
+  - /bin/sh

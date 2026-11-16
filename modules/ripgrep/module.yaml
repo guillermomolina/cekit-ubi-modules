@@ -1,0 +1,8 @@
+name: ripgrep
+version: "0.1.0"
+description: Installs ripgrep (rg) from EPEL.
+modules:
+  install:
+    - name: epel
+execute:
+  - script: install.sh

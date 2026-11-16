@@ -1,0 +1,8 @@
+name: yq
+version: "0.1.0"
+description: Installs the yq YAML processor from EPEL.
+modules:
+  install:
+    - name: epel
+execute:
+  - script: install.sh

@@ -1,0 +1,5 @@
+name: jq
+version: "0.1.0"
+description: Installs jq for JSON processing.
+execute:
+  - script: install.sh

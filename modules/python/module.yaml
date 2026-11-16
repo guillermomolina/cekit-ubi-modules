@@ -1,0 +1,19 @@
+name: python
+version: "0.1.0"
+description: Installs Python/pip and an optional per-user package upload configuration.
+artifacts:
+  - name: python-pypirc-hook
+    path: files/pypirc.sh
+    target: pypirc.sh
+modules:
+  install:
+    - name: entrypoint
+envs:
+  - name: REQUESTS_CA_BUNDLE
+    value: /etc/pki/tls/certs/ca-bundle.crt
+  - name: PIP_ROOT_USER_ACTION
+    value: ignore
+  - name: PIP_INSTALL_OPTIONS
+    value: "--root-user-action=ignore --disable-pip-version-check --no-cache-dir"
+execute:
+  - script: install.sh

@@ -1,0 +1,5 @@
+name: vault
+version: "0.1.0"
+description: Installs the HashiCorp Vault CLI from the official Linux amd64 archive.
+execute:
+  - script: install.sh

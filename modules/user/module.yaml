@@ -1,0 +1,5 @@
+name: user
+version: "0.1.0"
+description: Creates a non-root user and home, with optional passwordless sudo.
+execute:
+  - script: install.sh

@@ -1,0 +1,12 @@
+name: skopeo
+version: "0.1.0"
+description: Installs Skopeo and configures nested container storage and subordinate IDs.
+modules:
+  install:
+    - name: user
+    - name: git
+execute:
+  - script: install.sh
+envs:
+  - name: REGISTRY_AUTH_FILE
+    value: /tmp/auth.json
