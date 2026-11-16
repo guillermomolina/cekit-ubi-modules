@@ -1,0 +1,21 @@
+schema_version: 1
+name: localhost/examples/startup-hooks
+version: latest
+description: A local module adding a user startup hook.
+from: docker.io/redhat/ubi10-minimal:latest
+modules:
+  repositories:
+    - name: shared-modules
+      path: ../../modules
+    - name: example-modules
+      path: modules
+  install:
+    - name: example_hello
+envs:
+  - name: VERBOSE_BOOT
+    value: "no"
+run:
+  cmd:
+    - /bin/sh
+    - -c
+    - "printf '%s\n' 'command: ready'"

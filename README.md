@@ -10,6 +10,19 @@ The modules contain no organization-specific certificates, package servers,
 Vault addresses or credentials. Private configuration belongs to the consuming
 image or to a separate private module repository.
 
+## Documentation
+
+- [Step-by-step tutorial](docs/tutorial.md): build an image, add tools, run as
+  a non-root user and add a startup hook.
+- [Module reference](docs/module-reference.md): build arguments, runtime options,
+  dependencies and entrypoints.
+- [Practical recipes](docs/recipes.md): CA certificates, credentials, Ansible,
+  Apache, charts and Java versions.
+- [Runnable examples](images/README.md): choose an image and try its commands.
+
+Start with the tutorial if you have not used CEKit before. All commands in the
+guides assume the repository root unless another directory is shown.
+
 ## Quick start
 
 Requires Python 3.12+, CEKit 4.16.0, Git and Buildah. Podman runs the examples.

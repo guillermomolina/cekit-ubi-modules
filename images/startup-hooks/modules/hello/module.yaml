@@ -1,0 +1,12 @@
+name: example_hello
+version: "0.1.0"
+description: Adds a small user startup hook.
+modules:
+  install:
+    - name: entrypoint
+artifacts:
+  - name: example-hello-hook
+    path: files/hello.sh
+    target: example-hello.sh
+execute:
+  - script: install.sh

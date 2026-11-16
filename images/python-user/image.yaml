@@ -1,0 +1,30 @@
+schema_version: 1
+name: localhost/examples/python-user
+version: latest
+description: Python running as an unprivileged user.
+from: docker.io/redhat/ubi10-minimal:latest
+args:
+  - name: USER_NAME
+    value: app
+  - name: USER_UID
+    value: "1000"
+  - name: USER_GID
+    value: "1000"
+modules:
+  repositories:
+    - path: ../../modules
+  install:
+    - name: user
+    - name: python
+envs:
+  - name: HOME
+    value: /home/app
+  - name: VERBOSE_BOOT
+    value: "no"
+run:
+  user: "1000"
+  workdir: /home/app
+  cmd:
+    - python3
+    - -c
+    - "import os; print('uid=%s home=%s' % (os.getuid(), os.environ['HOME']))"

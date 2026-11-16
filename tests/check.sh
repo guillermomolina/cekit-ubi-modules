@@ -12,6 +12,7 @@ for file in modules/*/*.sh modules/*/files/*; do
 done
 
 for image in images/*; do
+    [ -d "$image" ] || continue
     if [ "$image" = images/custom-ca ] && [ ! -f "$image/private/custom-ca.crt" ]; then
         echo 'Skipping custom-ca: supply your own private/custom-ca.crt to check it.'
         continue
