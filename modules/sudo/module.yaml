@@ -1,0 +1,5 @@
+name: sudo
+version: "0.1.0"
+description: Installs sudo without granting additional permissions.
+execute:
+  - script: install.sh

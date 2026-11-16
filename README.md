@@ -59,6 +59,7 @@ repositories and upstream release servers.
 | `ca` | Install a caller-supplied custom CA | none |
 | `entrypoint` | System/user startup hooks and command execution | none |
 | `user` | User, group, home and optional passwordless sudo | none |
+| `sudo` | Sudo package; permissions configured by consuming modules | none |
 | `epel` | Enable EPEL for the detected RHEL major version | none |
 | `git` | Git Core and optional startup update | `entrypoint` |
 | `make`, `jq` | GNU Make and JSON processing | none |
@@ -189,7 +190,7 @@ for your deployment. SSH files are generated under the user's home by default.
   permissions. UID/GID must be below 65535 for the supplied subordinate ranges.
 - `entrypoint` runs executable system hooks in `/entrypoint.d` as root and user
   hooks in `/entrypoint.user.d` as the current user. Non-root system hooks require
-  sudo. Its sudo rule permits only `/run-system-hooks.sh`, without arguments;
+  the `sudo` module. Its sudo rule permits only `/run-system-hooks.sh`, without arguments;
   general passwordless sudo is a separate explicit `user` option.
 
 ## Contributing

@@ -48,6 +48,17 @@ Bash is installed if selected and missing. Other shells must already exist.
 account. The module does not set image `run.user`, `run.workdir` or `HOME`.
 See [python-user](../images/python-user/image.yaml) for all three settings.
 
+### `sudo`
+
+No module dependencies or configuration arguments. Installs the `sudo` RPM and
+cleans the package cache. It does not add sudoers rules or grant an account any
+additional permissions. `entrypoint` supplies the restricted system-hook rule;
+`user` supplies unrestricted account access only when `USER_SUDO=yes`.
+
+`user` keeps its conditional package installation rather than depending on
+`sudo`, so `USER_SUDO=no` does not install an unused package. Select `sudo`
+explicitly when another module needs the command without general sudo access.
+
 ### `entrypoint`
 
 No module dependencies. Installs `/entrypoint.sh` and `/run-system-hooks.sh`.
@@ -66,7 +77,7 @@ Non-root system hooks require sudo. The installed sudoers rule permits only
 `/run-system-hooks.sh` with no arguments. It is independent of `USER_SUDO=yes`.
 User hooks do not need sudo. See the [startup-hooks example](../images/startup-hooks).
 
-`entrypoint` does not install sudo. Install that RPM in the consuming module
+`entrypoint` does not install sudo. Select the `sudo` module in the image
 when non-root execution needs system hooks. `USER_SUDO=yes` installs it too,
 but grants broader privileges than the restricted system-hook rule. No sudo is
 needed when there are no executable system hooks. Keep system hooks and their

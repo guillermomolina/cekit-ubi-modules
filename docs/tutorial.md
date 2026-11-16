@@ -213,11 +213,44 @@ user-owned project. Hooks run on every start, so make repeated execution safe.
 
 **Non-root execution with system hooks requires sudo to be installed.**
 `entrypoint` writes a rule allowing only `/run-system-hooks.sh` without arguments,
-but does not install sudo. A consuming module can install the `sudo` RPM during
-the build to use that restricted rule. `USER_SUDO=yes` also installs sudo, but
+but does not install sudo. Select the `sudo` module in the image to install the
+package and use that restricted rule. `USER_SUDO=yes` also installs sudo, but
 additionally grants the account unrestricted passwordless sudo; it is not
 required merely to use system hooks. Keep the system runner, its hooks and
 their directories owned by root and unwritable by the application user.
+
+For an image whose local `project` module installs the hooks above, the relevant
+descriptor settings are:
+
+```yaml
+args:
+  - name: USER_NAME
+    value: app
+  - name: USER_SUDO
+    value: "no"
+modules:
+  repositories:
+    - name: shared-modules
+      path: ../../modules
+    - name: project-modules
+      path: modules
+  install:
+    - name: user
+    - name: sudo
+    - name: project
+envs:
+  - name: HOME
+    value: /home/app
+run:
+  user: "1000"
+  workdir: /home/app
+  cmd: [/bin/sh, -c, "id"]
+```
+
+This is a descriptor fragment to adapt to your image, not an additional
+checked-in example. Its local `project` module must depend on `entrypoint`.
+The account retains `USER_SUDO=no`; only the system-hook runner is authorized
+by the rule from `entrypoint`. The `sudo` module itself adds no permissions.
 
 If there are no executable system hooks, a non-root container needs no sudo.
 When the container runs as root, both types of hooks run as root: the entrypoint
