@@ -29,6 +29,10 @@ The Makefiles intentionally do not contain publishing or credential automation.
 | [maven](maven/image.yaml) | Maven 3 with a transitive JDK dependency | `podman run --rm localhost/examples/maven:latest` |
 | [container-tools](container-tools/image.yaml) | Buildah/Skopeo storage and a shared account | `podman run --rm localhost/examples/container-tools:latest buildah --version` |
 | [credentials](credentials/image.yaml) | Optional credential hooks and Vault CLI | See [runtime secret files](../docs/recipes.md#write-a-generic-secret-file-without-vault) |
+| [rsync](rsync/image.yaml) | Local transfer and vanished-file-tolerant wrapper | `podman run --rm localhost/examples/rsync:latest` |
+| [ssh](ssh/image.yaml) | OpenSSH client with distribution defaults | `podman run --rm localhost/examples/ssh:latest` |
+| [sonar-scanner](sonar-scanner/image.yaml) | Generic SonarScanner CLI with shared Java 21 | `podman run --rm localhost/examples/sonar-scanner:latest` |
+| [velero-client](velero-client/image.yaml) | Velero CLI without a cluster dependency for version checks | `podman run --rm localhost/examples/velero-client:latest` |
 | [custom-ca](custom-ca/image.yaml) | Certificate artifact supplied by the caller | Provide `private/custom-ca.crt` first; see the [CA recipe](../docs/recipes.md#install-a-custom-ca) |
 
 ## What is deliberately not automatic

@@ -1,0 +1,20 @@
+schema_version: 1
+name: localhost/examples/sonar-scanner
+version: latest
+description: sonar-scanner with public module defaults.
+from: docker.io/redhat/ubi10-minimal:latest
+modules:
+  repositories:
+  - path: ../../modules
+  install:
+  - name: entrypoint
+  - name: sonar-scanner
+run:
+  cmd:
+  - sonar-scanner
+  - --version
+args:
+- name: SONAR_SCANNER_VERSION
+  value: 6.2.1.4610
+- name: JAVA_MAJOR_VERSION
+  value: '21'

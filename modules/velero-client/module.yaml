@@ -1,0 +1,5 @@
+name: velero-client
+version: 0.1.0
+description: Installs the Velero CLI and Bash completion.
+execute:
+- script: install.sh

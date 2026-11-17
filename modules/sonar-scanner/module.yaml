@@ -1,0 +1,11 @@
+name: sonar-scanner
+version: 0.1.0
+description: Installs SonarScanner CLI using the shared Java runtime.
+modules:
+  install:
+  - name: java
+envs:
+- name: SONAR_SCANNER_HOME
+  value: /opt/sonar-scanner
+execute:
+- script: install.sh

@@ -1,0 +1,9 @@
+name: rsync
+version: 0.1.0
+description: Installs rsync and a wrapper accepting vanished-file exit status 24.
+artifacts:
+- name: permissive-rsync
+  path: files/permissive-rsync.sh
+  target: permissive-rsync.sh
+execute:
+- script: install.sh

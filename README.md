@@ -73,15 +73,20 @@ repositories and upstream release servers.
 | `vault` | Vault CLI | none |
 | `credentials` | Optional runtime credential files and SSH certificates | `entrypoint`, `vault` |
 | `buildah`, `podman`, `skopeo` | Container/image tooling with nested storage | `user`, `git` |
+| `rsync` | Rsync and vanished-file-tolerant wrapper | none |
+| `ssh` | OpenSSH clients with distribution defaults | none |
+| `sonar-scanner` | SonarScanner CLI using the shared JVM | `java` |
+| `velero-client` | Velero CLI with Bash completion | none |
 | `oc` | OpenShift CLI with Bash completion | none |
 | `kubeconform`, `kube-linter` | Kubernetes manifest validation | none |
 
 Dependencies are declared in `module.yaml`; CEKit resolves them transitively
 and installs shared dependencies once. Modules declare package dependencies in
-their installation scripts. Downloaded binaries are currently Linux amd64.
+their installation scripts. Downloaded platform-specific binaries target Linux amd64 unless noted;
+`velero-client` also supports Linux arm64.
 Tools installed from RPM follow the enabled repositories; upstream binary
-versions are configured with their build arguments. Release downloads currently
-use HTTPS without an additional archive checksum verification step.
+versions are configured with their build arguments. Release downloads use HTTPS. Maven additionally verifies the published SHA-512;
+other download modules do not currently add archive checksum verification.
 
 ## Use from another repository
 

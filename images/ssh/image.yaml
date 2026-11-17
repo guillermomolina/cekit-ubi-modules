@@ -1,0 +1,15 @@
+schema_version: 1
+name: localhost/examples/ssh
+version: latest
+description: ssh with public module defaults.
+from: docker.io/redhat/ubi10-minimal:latest
+modules:
+  repositories:
+  - path: ../../modules
+  install:
+  - name: entrypoint
+  - name: ssh
+run:
+  cmd:
+  - ssh
+  - -V

@@ -1,0 +1,5 @@
+name: ssh
+version: 0.1.0
+description: Installs OpenSSH clients with distribution defaults.
+execute:
+- script: install.sh

@@ -295,3 +295,52 @@ Storage configuration alone does not grant host kernel permissions. Running
 nested builds may need devices, namespace mappings and capabilities supplied
 by the runtime. The example does not enable privileged mode. Volumes and the
 final runtime user are choices for the consuming image.
+
+## File transfer, scanning and backup clients
+
+### `rsync`
+
+No module dependencies or build arguments. Installs the distribution's `rsync`
+and Bash/grep, plus `/usr/bin/permissive-rsync.sh`. The wrapper forwards arguments
+unchanged, filters vanished-file messages on stderr, and maps only rsync exit
+status 24 to success. Other statuses and stdout are preserved. It does not
+select a command, create a user, or configure volumes. Add `ssh` to use rsync
+over SSH; the rsync module itself only needs local transfer support.
+
+### `ssh`
+
+No module dependencies or build arguments. Installs `openssh-clients`, retaining
+the distribution's SSH configuration. It neither starts an SSH server nor
+creates an account. Compose it with `user` if needed; mount keys and known hosts
+at runtime. Private compatibility settings belong to a consuming image or
+private module, not this module.
+
+### `sonar-scanner`
+
+Depends on `java`. `SONAR_SCANNER_VERSION=6.2.1.4610` selects the official generic
+ZIP without an embedded JRE. Installs unzip/findutils and sets
+`SONAR_SCANNER_HOME=/opt/sonar-scanner`; `sonar-scanner` is available on PATH.
+Use `JAVA_MAJOR_VERSION=17`, `21` (default) or `25`, subject to the Java module's
+UBI compatibility table. No user, server URL, certificate or token is bundled.
+
+Mount a writable project directory and supply `SONAR_HOST_URL` and `SONAR_TOKEN`
+at runtime. Set `SONAR_USER_HOME` to a writable cache location for non-root
+execution. SonarScanner's own JRE provisioning remains unchanged; to use the
+installed JVM for the analysis engine, pass
+`-Dsonar.scanner.skipJreProvisioning=true`. See the official
+[scanner documentation](https://docs.sonarsource.com/sonarqube-server/analyzing-source-code/scanners/sonarscanner)
+and [JRE provisioning documentation](https://docs.sonarsource.com/sonarqube-community-build/analyzing-source-code/scanners/scanner-environment/managing-jre-auto-provisioning).
+
+### `velero-client`
+
+No module dependencies. `VELERO_VERSION=1.16.2` selects a release without a `v`
+prefix. Installs tar/gzip and bash-completion, then the official Linux CLI for
+x86_64/amd64 or aarch64/arm64. The executable is `/usr/bin/velero`; Bash completion
+is installed under `/etc/bash_completion.d`. It does not install kubectl,
+configure a cluster, or start a server. Mount your kubeconfig when querying a
+cluster; `velero version --client-only` works without one. See the official
+[Velero installation guide](https://velero.io/docs/v1.16/basic-install/).
+
+All four modules can be used without `entrypoint`. Select it separately if the
+consuming image needs startup hooks. Examples are under `images/rsync`,
+`images/ssh`, `images/sonar-scanner` and `images/velero-client`.
